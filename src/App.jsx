@@ -22,26 +22,27 @@ function App() {
     }
 
     if (ch === "=") {
+      // 1. Prevent empty input
       if (input.trim() === "") {
         setResult("");
         return;
       }
 
-      // Prevent evaluation if expression ends with an operator
+      // 2. Prevent evaluation if last char is an operator
       const lastChar = input.slice(-1);
-      if (isOperator(lastChar)) {
+      if (isOperator(lastChar) || lastChar === ".") {
         setResult("Error");
         return;
       }
 
-      // allow only safe characters (digits, operators, parentheses, dot, spaces)
+      // 3. Allow only safe characters
       if (!/^[0-9+\-*/().\s]+$/.test(input)) {
         setResult("Error");
         return;
       }
 
       try {
-        // evaluate expression using JavaScript's precedence rules (BODMAS)
+        // 4. Evaluate safely (BODMAS via JS)
         // eslint-disable-next-line no-eval
         const val = eval(input);
         setResult(String(val));
@@ -53,7 +54,7 @@ function App() {
 
     // If operator clicked
     if (isOperator(ch)) {
-      // don't allow operator as first char except minus for negative numbers
+      // don't allow operator as first char except minus
       if (input === "" && ch !== "-") return;
 
       // replace last operator if last char is operator
