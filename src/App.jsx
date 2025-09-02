@@ -26,11 +26,20 @@ function App() {
         setResult("");
         return;
       }
+
+      // Prevent evaluation if expression ends with an operator
+      const lastChar = input.slice(-1);
+      if (isOperator(lastChar)) {
+        setResult("Error");
+        return;
+      }
+
       // allow only safe characters (digits, operators, parentheses, dot, spaces)
       if (!/^[0-9+\-*/().\s]+$/.test(input)) {
         setResult("Error");
         return;
       }
+
       try {
         // evaluate expression using JavaScript's precedence rules (BODMAS)
         // eslint-disable-next-line no-eval
